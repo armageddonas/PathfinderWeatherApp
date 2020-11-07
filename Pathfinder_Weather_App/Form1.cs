@@ -12,11 +12,7 @@ namespace Pathfinder_Weather_App
 {
     public partial class Form1 : Form
     {
-        int day, temperature, duration, precIntensityAdj;
-        string timeOfDay, cloudcover, windStrength, events, precIntesity;
-
-        List<string> intensities = new List<string>{ "Light", "Medium", "Heavy", "Torrential" };
-
+        bool firstTime = true;
 
         public Form1()
         {
@@ -26,38 +22,48 @@ namespace Pathfinder_Weather_App
         private void Form1_Load(object sender, EventArgs e)
         {
             DataMapper dm = new DataMapper();
-            climateComboBox.Items.AddRange(dm.GetComboBoxData("Climates", "Climate"));
-            elevationComboBox.Items.AddRange(dm.GetComboBoxData("Elevations", "Elevation"));
-            precFreqComboBox.Items.AddRange(dm.GetComboBoxData("Precipitation_Frequency", "Frequency"));
+            climateComboBox.Items.AddRange(dm.GetComboBoxData("Climates", "Climate", null));
+            elevationComboBox.Items.AddRange(dm.GetComboBoxData("Elevations", "Elevation", "Elevation"));
 
             //comboboxes default selected
-            climateComboBox.SelectedIndex = 0;
-            elevationComboBox.SelectedIndex = 0;
+            climateComboBox.SelectedItem = "Temperate";
+            elevationComboBox.SelectedItem = "Sea Level";
             seasonComboBox.SelectedIndex = 0;
-            precFreqComboBox.SelectedIndex = 0;
-            precIntensityComboBox.SelectedIndex = 0;
+            precFreqComboBox.SelectedItem = "Default";
+            precIntensityComboBox.SelectedItem = "Default";
+            tempScaleBox.SelectedItem = "Celsius";
+            distScaleBox.SelectedItem = "Metric";
 
         }
 
         private void generatorButton_Click(object sender, EventArgs e)
         {
-            Generator();
-
-
+            WeatherGenerator wg = new WeatherGenerator(climateComboBox, elevationComboBox, seasonComboBox, precFreqComboBox, precIntensityComboBox);
+            dataViewer.Rows.Clear();
+            wg.DataShower(dataViewer, tempScaleBox.SelectedItem.ToString(),distScaleBox.SelectedItem.ToString());
         }
 
-        void Generator()
+        private void clearButton_Click(object sender, EventArgs e)
         {
-            DataMapper dm = new DataMapper();
-            List<string> tempList = dm.GetClimateData(climateComboBox.SelectedItem.ToString(), seasonComboBox.SelectedIndex);
-            temperature = Int32.Parse(tempList[0]);
-            precIntensityAdj = Int32.Parse(tempList[1]);
+            dataViewer.Rows.Clear();
+        }
 
-            tempList = dm.GetElevationData(elevationComboBox.SelectedItem.ToString());
-            temperature += Int32.Parse(tempList[0]);
-            precIntesity = intensities[intensities.FindIndex(a => a.Contains(tempList[1])) + precIntensityAdj];//modifies the precipitation intensity by the value gotten from climate. 
-
-
+        private void tempScaleBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (firstTime) { return; }
+            int rows = dataViewer.RowCount;
+            //todo
+            for(int i =0;i<rows;i++)
+            {
+                if (tempScaleBox.SelectedItem.ToString() == "Celsius")
+                {
+                    dataViewer[2, i].Value = Int32.Parse(dataViewer[2, i].Value.ToString()) * 9 / 5 + 32;
+                }
+                else
+                {
+                    dataViewer[2, i].Value = (Int32.Parse(dataViewer[2, i].Value.ToString())-30)/2;
+                }
+            }
         }
     }
 }

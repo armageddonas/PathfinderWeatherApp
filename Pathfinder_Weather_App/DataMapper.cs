@@ -36,13 +36,24 @@ namespace Pathfinder_Weather_App
             conn.Close();
         }
 
-        public object[] GetComboBoxData(string table, string column)
+        /// <summary>
+        /// returns the elements of the specified column from table given.
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="column"></param>
+        /// <param name="orderColumn"></param>
+        /// <returns></returns>
+        public object[] GetComboBoxData(string table, string column, string orderColumn)
         {
             if (ConnOpen())
             {
                 OleDbCommand cmd = conn.CreateCommand();
                 cmd.Connection = conn;
                 cmd.CommandText = "Select " + column + " from " + table;
+                if (orderColumn != null)
+                {
+                    cmd.CommandText += " order by " + orderColumn;
+                }
 
                 using (OleDbDataReader reader = cmd.ExecuteReader())
                 {
@@ -60,6 +71,12 @@ namespace Pathfinder_Weather_App
             return null;
         }
 
+        /// <summary>
+        /// returns base temperature in position 0, prec intensity adj in position 1, prec frenquency name in position 2, temperature template in position 3.
+        /// </summary>
+        /// <param name="climate"></param>
+        /// <param name="position"></param>
+        /// <returns></returns>
         public List<string> GetClimateData(string climate, int position)
         {
             if (ConnOpen())
@@ -75,7 +92,8 @@ namespace Pathfinder_Weather_App
                     {
                         list.Add(reader.GetValue(position+1).ToString());                        
                         list.Add(reader.GetValue(5).ToString());                        
-                        list.Add(reader.GetValue(position+6).ToString());                        
+                        list.Add(reader.GetValue(position+6).ToString());
+                        list.Add(reader.GetValue(10).ToString());
                     }
                     reader.Close();
                     cmd.Dispose();
@@ -86,6 +104,11 @@ namespace Pathfinder_Weather_App
             return null; 
         }
 
+        /// <summary>
+        /// returns temperature adj in position 0, prec intensity in pos 1, prec frequency adj in position 2.
+        /// </summary>
+        /// <param name="elevation"></param>
+        /// <returns></returns>
         public List<string> GetElevationData(string elevation)
         {
             if (ConnOpen())
