@@ -344,12 +344,14 @@
             this.dayColumn.HeaderText = "Day";
             this.dayColumn.Name = "dayColumn";
             this.dayColumn.ReadOnly = true;
+            this.dayColumn.Width = 50;
             // 
             // temperatureColumn
             // 
             this.temperatureColumn.HeaderText = "Temperature";
             this.temperatureColumn.Name = "temperatureColumn";
             this.temperatureColumn.ReadOnly = true;
+            this.temperatureColumn.Width = 70;
             // 
             // cloudcoverColumn
             // 
@@ -375,6 +377,7 @@
             this.durationColumn.HeaderText = "Duration";
             this.durationColumn.Name = "durationColumn";
             this.durationColumn.ReadOnly = true;
+            this.durationColumn.Width = 80;
             // 
             // timeOfDayColumn
             // 
@@ -384,16 +387,18 @@
             // 
             // VisionColumn
             // 
+            this.VisionColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.VisionColumn.HeaderText = "Vision";
             this.VisionColumn.Name = "VisionColumn";
             this.VisionColumn.ReadOnly = true;
-            this.VisionColumn.Width = 84;
+            this.VisionColumn.Width = 60;
             // 
             // PerceptionColumn
             // 
-            this.PerceptionColumn.HeaderText = "Perception Ranged Attack Penalty";
+            this.PerceptionColumn.HeaderText = "Perception Ranged Attack Penalties";
             this.PerceptionColumn.Name = "PerceptionColumn";
             this.PerceptionColumn.ReadOnly = true;
+            this.PerceptionColumn.Width = 120;
             // 
             // MiscColumn
             // 

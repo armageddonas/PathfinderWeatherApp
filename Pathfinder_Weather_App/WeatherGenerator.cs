@@ -17,7 +17,8 @@ namespace Pathfinder_Weather_App
         int precIntensityAdj;//done
         int precFreq;//done
         int seasonPos;//done
-        int eventsPenalty;//done
+        int rangedPenalty;//done
+        int perceptionPenalty;//done
         string cloudcover;
 
         string windStrength;
@@ -131,7 +132,8 @@ namespace Pathfinder_Weather_App
             events = table[key].Item1;
             eventDuration = roller.Next(table[key].Item2, table[key].Item3 + 1);
             eventsVision = WeatherTables.Mechanics[events].Item1;
-            eventsPenalty = WeatherTables.Mechanics[events].Item2;
+            perceptionPenalty = WeatherTables.Mechanics[events].Item2;
+            rangedPenalty = WeatherTables.Mechanics[events].Item2;
             eventsDesc = WeatherTables.Mechanics[events].Item3;
             needsClouds = WeatherTables.Mechanics[events].Item4;
         }
@@ -194,7 +196,7 @@ namespace Pathfinder_Weather_App
             {
                 windStrength = WeatherTables.Winds[key].Item1;
             }
-            eventsPenalty += WeatherTables.Winds[key].Item4;
+            rangedPenalty += WeatherTables.Winds[key].Item4;
         }
 
         /// <summary>
@@ -226,7 +228,8 @@ namespace Pathfinder_Weather_App
             for (int i = 0; i < 7; i++)
             {
                 int tempnow = 0;
-                eventsPenalty = 0;
+                rangedPenalty = 0;
+                perceptionPenalty = 0;
                 if (i >= dholder)
                 {
                     TemperatureGenerator();
@@ -262,7 +265,12 @@ namespace Pathfinder_Weather_App
                 {
                     tempnow = (temperature - 30) / 2;
                 }
-                table.Rows.Add(i+1, tempnow, cloudcover, windStrength+speednow, events, eventDuration.ToString() + " hours", daytime, eventsVision, eventsPenalty.ToString(), eventsDesc);                
+                string siegePenalty = null;
+                if (rangedPenalty <= -50)
+                {
+                    siegePenalty = " / -4 on siege weapons";
+                }
+                table.Rows.Add(i+1, tempnow, cloudcover, windStrength+speednow, events, eventDuration.ToString() + " hours", daytime, eventsVision, perceptionPenalty.ToString()+" / "+rangedPenalty.ToString()+siegePenalty, eventsDesc);                
             }
             return list;
         }
