@@ -146,12 +146,12 @@ namespace Pathfinder_Weather_App
         {
             {"Drizzle",("3/4", -2, "Extinguishes tiny unprotected flames", true) },
             {"Heavy Fog", ("5 feet, after which concealment", 0, "", false) },
-            {"Light Fog", ("3/4", -2, null, false) },
-            {"Medium Fog", ("1/2", -4 , null, false) },
+            {"Light Fog", ("3/4", -2, " ", false) },
+            {"Medium Fog", ("1/2", -4 , " ", false) },
             {"Rain", ("1/2", -4, "Extinguishes all unprotected flames", true) },
             {"Heavy Rain", ("1/4", -6, "Extinguishes all unprotected flames", true) },
             {"Heavy Snow", ("1/4", -6, "Difficult terrain. Extinguishes all unprotected flames", true)},
-            {"Light Snow", ("3/4", -2, null, true) },
+            {"Light Snow", ("3/4", -2, " ", true) },
             {"Medium Snow", ("1/2", -4, "Difficult terrain", true) },
             {"Thunderstorm", ("1/4", -6, "Concentration DC 15 + spell. Extinguishes all unprotected flames", true) }
         };

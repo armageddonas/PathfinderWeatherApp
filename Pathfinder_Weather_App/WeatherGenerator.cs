@@ -132,8 +132,8 @@ namespace Pathfinder_Weather_App
             events = table[key].Item1;
             eventDuration = roller.Next(table[key].Item2, table[key].Item3 + 1);
             eventsVision = WeatherTables.Mechanics[events].Item1;
-            perceptionPenalty = WeatherTables.Mechanics[events].Item2;
-            rangedPenalty = WeatherTables.Mechanics[events].Item2;
+            perceptionPenalty += WeatherTables.Mechanics[events].Item2;
+            rangedPenalty += WeatherTables.Mechanics[events].Item2;
             eventsDesc = WeatherTables.Mechanics[events].Item3;
             needsClouds = WeatherTables.Mechanics[events].Item4;
         }
@@ -228,6 +228,10 @@ namespace Pathfinder_Weather_App
             for (int i = 0; i < 7; i++)
             {
                 int tempnow = 0;
+                events = " ";
+                eventDuration = 0;
+                daytime = " ";
+                eventsVision = " ";
                 rangedPenalty = 0;
                 perceptionPenalty = 0;
                 if (i >= dholder)
@@ -268,10 +272,12 @@ namespace Pathfinder_Weather_App
                 string siegePenalty = null;
                 if (rangedPenalty <= -50)
                 {
+                    perceptionPenalty += -8;
                     siegePenalty = " / -4 on siege weapons";
                 }
-                table.Rows.Add(i+1, tempnow, cloudcover, windStrength+speednow, events, eventDuration.ToString() + " hours", daytime, eventsVision, perceptionPenalty.ToString()+" / "+rangedPenalty.ToString()+siegePenalty, eventsDesc);                
+                table.Rows.Add(i+1, tempnow, cloudcover, windStrength+speednow, events, eventDuration.ToString() + " hours", daytime, eventsVision, perceptionPenalty.ToString()+" / "+rangedPenalty.ToString()+siegePenalty, eventsDesc);
             }
+            table.Rows.Add(-1, -1, "DONE", "DONE", "DONE", "DONE", "DONE", "DONE", "DONE", "DONE");
             return list;
         }
     }
